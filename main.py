@@ -1,18 +1,26 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel, Field
+from typing import List
 
 app = FastAPI()
 
-# Rota 1 - Home
+# Modelo de Item
+class Item(BaseModel):
+    nome: str = Field(..., example="Exemplo de item")
+    quantidade: int = Field(..., ge=1, example=3)
+
+# Lista interna para armazenar itens
+items: List[Item] = []
+
 @app.get("/")
 def read_root():
-    return {"mensagem": "Bem-vindo à nossa API do EP2!"}
+    return {"mensagem": "Bem-vindo à API de itens!"}
 
-# Rota 2 - Lista de itens (GET)
 @app.get("/items")
 def get_items():
-    return {"itens": ["Item 1", "Item 2", "Item 3"]}
+    return items
 
-# Rota 3 - Criar item (POST)
 @app.post("/items")
-def create_item(item: dict):
+def create_item(item: Item):
+    items.append(item)
     return {"mensagem": "Item criado com sucesso!", "item": item}
