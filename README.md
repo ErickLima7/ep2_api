@@ -1,59 +1,70 @@
-EP2 - API do Projeto
-Sobre a API
+EP3 – Testes da API
+Descrição do Projeto
 
-Esta API foi desenvolvida como entregável parcial 2 (EP2) e possui três rotas principais:
+Este projeto é uma API simples feita com FastAPI e Pydantic.
+O objetivo é testar os endpoints com testes manuais e automatizados, verificando se a API funciona corretamente e como os testes ajudam a melhorar a qualidade do software.
 
-GET / → Mensagem de boas-vindas
+Como instalar e rodar
 
-GET /items → Lista de itens
+Clonar o repositório:
 
-POST /items → Criação de um novo item
+git clone <link-do-repositorio>
+cd ep2_api/ep2_api
 
-Como executar
 
-Ativar o ambiente virtual:
-.\venv\Scripts\Activate # Windows
-ou
-source venv/bin/activate # Linux/Mac
+Criar e ativar a virtualenv (Windows):
+
+python -m venv .venv
+.venv\Scripts\activate
+
+
+Linux/Mac:
+
+python3 -m venv .venv
+source .venv/bin/activate
+
 
 Instalar dependências:
-pip install fastapi uvicorn
+
+pip install -r requirements.txt
+
 
 Rodar a API:
+
 uvicorn main:app --reload
 
-Acesse a API em: http://127.0.0.1:8000/
 
-Documentação interativa (Swagger UI): http://127.0.0.1:8000/docs
+A API ficará disponível em http://127.0.0.1:8000
 
-Exemplos de requisição e resposta
-GET /
+Documentação automática em http://127.0.0.1:8000/docs
 
-Requisição: GET http://127.0.0.1:8000/
+Testes Automatizados
+Como rodar:
+pytest -q
 
-Resposta: {"mensagem":"Bem-vindo à nossa API do EP2!"}
+Testes feitos:
+Teste	O que verifica
+test_get_root	Se a rota / retorna a mensagem de boas-vindas
+test_get_items_initial	Se /items retorna a lista de itens
+test_post_item_success_and_presence	Criação de item e verificação na lista
+test_post_item_missing_field	Validação de campos obrigatórios (quantidade)
+test_docs_available	Se a documentação /docs está disponível
 
-GET /items
+✅ Todos os testes passaram.
 
-Requisição: GET http://127.0.0.1:8000/items
+Casos de Teste Manuais
+Caso	Cenário	Entrada	Passos	Resultado Esperado
+1	Criar item válido	{"nome": "ItemTeste", "quantidade": 5}	POST /items com JSON	Status 200/201, mensagem de sucesso, item aparece na lista
+2	Criar item sem campo obrigatório	{"nome": "ItemInvalido"}	POST /items com JSON	Status 400/422, mensagem de erro de campo obrigatório
+3	Listar itens	Nenhuma	GET /items	Status 200, lista de itens retornada
+4	Acessar página raiz	Nenhuma	GET /	Status 200, JSON {"mensagem": "Bem-vindo à API de itens!"}
+5	Acessar documentação	Nenhuma	GET /docs	Status 200, interface Swagger carregada
+Reflexão sobre qualidade do software
 
-Resposta: {"itens":["Item 1","Item 2","Item 3"]}
+Testes ajudam a evitar erros antes que os usuários encontrem problemas.
 
-POST /items
+Garantem que a API funcione conforme esperado.
 
-Requisição: POST http://127.0.0.1:8000/items
+Contribuem para sistemas mais confiáveis, seguros e estáveis.
 
-Content-Type: application/json
-{"nome": "Item Novo","quantidade": 10}
-Resposta: {"mensagem": "Item criado com sucesso!","item": {"nome": "Item Novo","quantidade": 10}}
-
-## Possíveis usos da nossa API
-
-Esta API pode ser utilizada por pequenas empresas ou desenvolvedores para:
-
-- **Gerenciar listas de itens e estoque** de maneira rápida, sem precisar de sistemas complexos.  
-- **Criar protótipos de aplicativos ou websites**, simulando funcionalidades de cadastro e consulta de produtos.  
-- **Automatizar processos de inventário**, por exemplo, registrando novos itens via formulários online.  
-- **Treinar aprendizado de APIs REST**, permitindo que estudantes ou iniciantes pratiquem requisições GET e POST.  
-
-Mesmo sendo simples, a API pode ser expandida para suportar **atualização (PUT), remoção (DELETE) e autenticação**, tornando-a útil para sistemas de vendas, controle de produtos ou qualquer aplicação que precise de gerenciamento básico de dados.
+Importante para que o software seja útil e seguro na prática para qualquer usuário.
