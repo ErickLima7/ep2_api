@@ -8,7 +8,7 @@ Como instalar e rodar
 
 Clonar o repositório:
 
-git clone <link-do-repositorio>
+git clone https://github.com/ErickLima7/ep2_api.git
 cd ep2_api/ep2_api
 
 
